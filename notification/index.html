@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #btn {
+            cursor: pointer;
+            width: 300px;
+            font-size: 1.2em;
+            line-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            color: white;
+            background: #ff0081;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Notifications API</h1>
+        <button id="btn">测试</button>
+    </div>
+
+    <script>const button = document.getElementById('btn');
+        let leaveNotification;
+
+        button.addEventListener('click', async () => {
+            const permission = await Notification.requestPermission();
+
+            if (permission === 'granted') {
+                const notification = new Notification('球球的前端奶茶屋', {
+                    body: '求三连～',
+                    data: {
+                        address: 'https://space.bilibili.com/25424697'
+                    },
+                    icon: '../images/bilibili.png',
+                    // tag: 'bilibili',
+                    // requireInteraction: true,
+                });
+                notification.addEventListener('close', e => {
+                    console.log(e);
+                });
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                leaveNotification = new Notification('快回来');
+            } else {
+                leaveNotification.close();
+            }
+        });
+    </script>
+</body>
+
+</html>
